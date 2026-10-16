@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lecture Recorder</title>
+<meta name="description" content="Record lectures, transcribe live and jot on the same clock.">
+<meta name="theme-color" content="#F3F5F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F141F" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <button class="icon-btn" id="backBtn" aria-label="Back to all lectures" hidden>←</button>
+  <h1 id="barTitle">Lectures</h1>
+  <button class="icon-btn" id="installBtn" hidden>Install</button>
+</header>
+
+<main>
+  <!-- LIBRARY -->
+  <section id="v-library" class="view">
+    <button class="big-rec" id="newBtn"><span class="rec-dot"></span>Record a lecture</button>
+    <div id="supportNote" class="note warn" hidden></div>
+    <ul class="lib" id="lib"></ul>
+    <p class="fine" id="storageNote"></p>
+  </section>
+
+  <!-- RECORD -->
+  <section id="v-record" class="view" hidden>
+    <div class="fields">
+      <input id="rTitle" placeholder="Lecture title" aria-label="Lecture title" autocomplete="off">
+      <input id="rCourse" placeholder="Course or paper" aria-label="Course or paper" autocomplete="off">
+    </div>
+    <div class="clockcard">
+      <div>
+        <div class="clock" id="clock">00:00</div>
+        <div class="status"><span class="dot" id="dot"></span><span id="statusText">Ready</span></div>
+      </div>
+      <div class="ctrls">
+        <button class="primary rec" id="startBtn">Start</button>
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="finishBtn" disabled>Finish</button>
+      </div>
+    </div>
+    <div id="recWarn" class="note warn" hidden></div>
+
+    <div class="log" id="log" aria-live="polite">
+      <p class="fine center" id="logEmpty">The transcript and your jottings appear here as you go.</p>
+    </div>
+
+    <div class="jotdock">
+      <div class="tags">
+        <button class="tag" data-tag="important">Important</button>
+        <button class="tag" data-tag="exam">Exam hint</button>
+        <button class="tag" data-tag="confused">Lost me here</button>
+        <button class="tag" data-tag="reading">Reading</button>
+      </div>
+      <form id="jotForm" class="jotrow" autocomplete="off">
+        <input id="jotText" placeholder="Jot something…" aria-label="Jotting">
+        <button type="submit" class="primary">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- DETAIL -->
+  <section id="v-detail" class="view" hidden>
+    <div class="fields">
+      <input id="dTitle" aria-label="Lecture title" placeholder="Lecture title">
+      <input id="dCourse" aria-label="Course or paper" placeholder="Course or paper">
+    </div>
+    <p class="fine" id="dMeta"></p>
+
+    <div class="sendcard">
+      <div>
+        <strong>Turn this into notes</strong>
+        <p class="fine">Send the transcript and jottings to Lecture Companion, then press <em>Write my notes</em> there.</p>
+      </div>
+      <div class="ctrls">
+        <button class="primary" id="shareBtn">Send file</button>
+        <button id="copyBtn">Copy text</button>
+        <a class="btn" id="companionLink" href="https://claude.ai/artifact/BmH69tUFkvt8JrU7rRg2FB" target="_blank" rel="noopener">Open Companion</a>
+      </div>
+    </div>
+
+    <div class="ctrls">
+      <button id="audioBtn">Download audio</button>
+      <button id="resumeBtn">Continue recording</button>
+      <span class="spacer"></span>
+      <span id="delWrap"><button class="danger" id="delBtn">Delete</button></span>
+    </div>
+    <audio id="player" controls preload="none" hidden></audio>
+
+    <h2 class="label">Jottings</h2>
+    <ul class="jots" id="dJots"></ul>
+    <h2 class="label">Transcript</h2>
+    <div class="log static" id="dLog"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
