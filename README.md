@@ -2,16 +2,6 @@
 
 An installable web app for your phone and laptop. It records the lecture, transcribes it live, and keeps your jottings on the same clock. Afterwards you send the file to Lecture Companion in Claude to get your notes.
 
-## Put it online (one time, about 10 minutes, free)
-
-The microphone only works when the app is opened from an `https://` address, so it needs hosting. GitHub Pages is free and permanent.
-
-1. Sign in at github.com. Create a new **public** repository called `lecture-recorder`.
-2. On the new repository's page, click **uploading an existing file**. Drag in everything from this folder, including the `icons` folder, and click **Commit changes**.
-3. Go to **Settings → Pages**. Under *Branch*, choose `main` and `/ (root)`, then click **Save**.
-4. After a minute or two, the app is live at `https://YOUR-USERNAME.github.io/lecture-recorder/`.
-
-Your lectures are never uploaded to GitHub. Only the app's own code lives there; every recording stays on the device that made it.
 
 ## Install it
 
