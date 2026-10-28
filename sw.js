@@ -1,5 +1,5 @@
 // Offline support: the app shell is cached so the recorder opens with no signal (live transcript still needs internet).
-const CACHE = 'lecture-recorder-v1';
+const CACHE = 'lecture-recorder-v2';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 

@@ -238,6 +238,12 @@ async function openDetail(id) {
   $('player').hidden = !chunks.length; $('player').removeAttribute('src');
   if (chunks.length) { const b = await audioBlobs(chunks); if (b.length) { $('player').src = URL.createObjectURL(b[0].blob); } }
   $('delWrap').innerHTML = '<button class="danger" id="delBtn">Delete</button>'; bindDelete();
+  $('desktopSteps').hidden = true;
+  $('sendHelp').textContent = isPhone
+    ? 'Tap Send to Claude, then choose Claude in the share menu. The lecture arrives with instructions, and Claude writes your notes in the chat.'
+    : 'Copies the lecture with instructions included. Paste it into a new chat in the Claude app, and Claude writes your notes.';
+  $('shareBtn').textContent = isPhone ? 'Send to Claude' : 'Copy for Claude';
+  $('copyBtn').hidden = !isPhone;
   show('detail', L.title || 'Untitled lecture');
 }
 async function audioBlobs(chunks) {
@@ -258,18 +264,51 @@ function exportText(L) {
 }
 function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }
 
+/* Instructions travel with the lecture, so any Claude chat (phone or laptop app) can write the notes. */
+function claudeMessage(L) {
+  const jots = L.lines.filter(l => l.kind === 'jot').map(l => `[${fmt(l.t)}] (${l.tag}) ${l.text || '(just marked this moment)'}`).join('\n') || '(none)';
+  const speech = L.lines.filter(l => l.kind === 'speech').map(l => `[${fmt(l.t)}] ${l.text}`).join('\n') || '(no live transcript — build the notes from my jottings)';
+  return `Please turn this lecture into study notes for me.
+
+How I like my notes: explain like a good tutor talking to a layman student — simple, relatable words, clearer than the slides. Keep it short: only the important parts, broken down. Use Markdown with these sections, and skip any that would be empty:
+1. Overview — 2–3 sentences on what the lecture covered.
+2. Key points — in the order taught; bold the key term; add the [mm:ss] time.
+3. Terms explained — each term in plain words, with a simple example.
+4. Things I flagged — my "important" and "exam" jottings: what the lecturer was saying then, and why it matters.
+5. Where I got lost — each "confused" jotting: explain that point simply. If the transcript doesn't settle it, tell me what to ask the lecturer.
+6. Readings mentioned.
+7. What to do next.
+
+The transcript comes from automatic speech recognition, so fix obvious mishearings and mark real doubts with (?). Don't add anything the lecture didn't say.
+
+LECTURE: ${L.title || 'Untitled'}${L.course ? ' — ' + L.course : ''} (${L.date})
+
+MY JOTTINGS (tags: important, exam = exam hint, confused = lost me here, reading, note):
+${jots}
+
+TRANSCRIPT:
+${speech}`;
+}
+const isPhone = matchMedia('(pointer: coarse)').matches && /Android|iPhone|iPad/i.test(navigator.userAgent);
+
 $('shareBtn').onclick = async () => {
-  const name = `${slug(current.title)}-${current.date}.txt`;
-  const file = new File([exportText(current)], name, { type: 'text/plain' });
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try { await navigator.share({ files: [file], title: current.title || 'Lecture' }); return; }
+  const text = claudeMessage(current);
+  if (isPhone && navigator.share) {
+    try { await navigator.share({ text, title: current.title || 'Lecture' }); return; }  // pick "Claude" in the share sheet
     catch (e) { if (e.name === 'AbortError') return; }
   }
-  download(file, name); toast('Downloaded — drop it into the Transcript tab in Lecture Companion', 4000);
+  // Laptop (or no share sheet): copy, then paste into the Claude app.
+  try { await navigator.clipboard.writeText(text); $('desktopSteps').hidden = false; toast('Copied — now paste it into a new Claude chat', 4000); }
+  catch (_) { $('fileBtn').click(); }
 };
 $('copyBtn').onclick = async () => {
-  try { await navigator.clipboard.writeText(exportText(current)); toast('Copied — paste it into the Transcript tab in Lecture Companion', 4000); }
-  catch (_) { toast('Copy didn’t work here. Use Send file instead.'); }
+  try { await navigator.clipboard.writeText(claudeMessage(current)); $('desktopSteps').hidden = false; toast('Copied — now paste it into a new Claude chat', 4000); }
+  catch (_) { toast('Copy didn’t work here. Use Save as file, then attach it in Claude.'); }
+};
+$('fileBtn').onclick = () => {
+  const name = `${slug(current.title)}-${current.date}.txt`;
+  download(new File([claudeMessage(current)], name, { type: 'text/plain' }), name);
+  toast('Saved — attach it to a new Claude chat and press Enter', 4000);
 };
 $('audioBtn').onclick = async () => {
   const parts = await audioBlobs(await chunksFor(current.id));

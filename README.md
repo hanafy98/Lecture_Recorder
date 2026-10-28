@@ -19,11 +19,13 @@ An installable web app for your phone and laptop. It records the lecture, transc
 
 ## Get your notes
 
-On the lecture's page, tap **Send file**:
-- **On a phone**, the share sheet opens. Pick the Claude app, or save the file and drop it into Lecture Companion's Transcript tab.
-- **On a laptop**, the file downloads. Drop it into the Transcript tab.
+Open the lecture in the app.
 
-You can also use **Copy text** and paste it into the Transcript tab. Then press **Write my notes** in Lecture Companion.
+- **On your phone:** tap **Send to Claude** and pick **Claude** in the share menu. The lecture arrives in a new chat with instructions included. Press send, and Claude writes your notes.
+- **On your laptop:** click **Copy for Claude**, open the **Claude app**, start a new chat, paste (Ctrl+V, or ⌘V on a Mac) and press Enter.
+- **Very long lecture?** Use **Save as file** and attach the file to a Claude chat instead.
+
+Use the Claude app rather than the website. The app is already signed in.
 
 ## Good to know
 

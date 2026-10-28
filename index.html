@@ -80,13 +80,17 @@
     <div class="sendcard">
       <div>
         <strong>Turn this into notes</strong>
-        <p class="fine">Send the transcript and jottings to Lecture Companion, then press <em>Write my notes</em> there.</p>
+        <p class="fine" id="sendHelp">Sends the lecture to the Claude app with instructions included. Claude writes your notes in the chat.</p>
       </div>
       <div class="ctrls">
-        <button class="primary" id="shareBtn">Send file</button>
-        <button id="copyBtn">Copy text</button>
-        <a class="btn" id="companionLink" href="https://claude.ai/artifact/BmH69tUFkvt8JrU7rRg2FB" target="_blank" rel="noopener">Open Companion</a>
+        <button class="primary" id="shareBtn">Send to Claude</button>
+        <button id="copyBtn">Copy for Claude</button>
+        <button id="fileBtn">Save as file</button>
       </div>
+      <ol class="steps fine" id="desktopSteps" hidden>
+        <li>Open the <b>Claude app</b> and start a new chat.</li>
+        <li>Paste with <b>Ctrl+V</b> (<b>⌘V</b> on a Mac) and press Enter.</li>
+      </ol>
     </div>
 
     <div class="ctrls">
