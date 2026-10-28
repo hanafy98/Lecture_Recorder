@@ -19,13 +19,15 @@ An installable web app for your phone and laptop. It records the lecture, transc
 
 ## Get your notes
 
-Open the lecture in the app.
+Open the lecture in the app and press **Notes in Companion**.
 
-- **On your phone:** tap **Send to Claude** and pick **Claude** in the share menu. The lecture arrives in a new chat with instructions included. Press send, and Claude writes your notes.
-- **On your laptop:** click **Copy for Claude**, open the **Claude app**, start a new chat, paste (Ctrl+V, or ⌘V on a Mac) and press Enter.
-- **Very long lecture?** Use **Save as file** and attach the file to a Claude chat instead.
+1. Lecture Companion opens with a **Paste your lecture** box. The Recorder has already copied your lecture.
+2. Paste it: **Ctrl+V** on a laptop (⌘V on a Mac), or tap the box and choose **Paste** on a phone.
+3. Companion saves the lecture and starts writing your notes straight away.
 
-Use the Claude app rather than the website. The app is already signed in.
+**One-time setup:** Companion runs on claude.ai, so sign in to claude.ai in the browser that opens (Chrome, Edge or Safari). You stay signed in after that. The first time it writes notes, it asks for permission; allow it.
+
+**Prefer a chat?** Use **Send to Claude** (phone) or **Copy for Claude** (laptop) to paste the lecture into a new chat in the Claude app instead.
 
 ## Good to know
 

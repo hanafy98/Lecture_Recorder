@@ -240,8 +240,8 @@ async function openDetail(id) {
   $('delWrap').innerHTML = '<button class="danger" id="delBtn">Delete</button>'; bindDelete();
   $('desktopSteps').hidden = true;
   $('sendHelp').textContent = isPhone
-    ? 'Tap Send to Claude, then choose Claude in the share menu. The lecture arrives with instructions, and Claude writes your notes in the chat.'
-    : 'Copies the lecture with instructions included. Paste it into a new chat in the Claude app, and Claude writes your notes.';
+    ? 'Or send it to a chat in the Claude app: tap Send to Claude, then choose Claude in the share menu.'
+    : 'Or paste it into a chat in the Claude app: click Copy for Claude, then paste into a new chat.';
   $('shareBtn').textContent = isPhone ? 'Send to Claude' : 'Copy for Claude';
   $('copyBtn').hidden = !isPhone;
   show('detail', L.title || 'Untitled lecture');
@@ -291,6 +291,13 @@ ${speech}`;
 }
 const isPhone = matchMedia('(pointer: coarse)').matches && /Android|iPhone|iPad/i.test(navigator.userAgent);
 
+$('companionBtn').onclick = async () => {
+  try { await navigator.clipboard.writeText(claudeMessage(current)); }
+  catch (_) { toast('Couldn’t copy the lecture here. Use Copy for Claude instead.'); return; }
+  toast(isPhone ? 'Copied. In Companion, tap the box and choose Paste.' : 'Copied. In Companion, press Ctrl+V (⌘V on a Mac).', 5000);
+  const a = document.createElement('a'); a.href = COMPANION + '#paste'; a.target = '_blank'; a.rel = 'noopener';
+  document.body.append(a); a.click(); a.remove();
+};
 $('shareBtn').onclick = async () => {
   const text = claudeMessage(current);
   if (isPhone && navigator.share) {
